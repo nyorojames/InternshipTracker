@@ -1,0 +1,15 @@
+# --- Build & Runtime ---
+[Bb]in/
+[Oo]bj/
+.vs/
+.vscode/
+
+# --- User Specific ---
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# --- OS Generated ---
+.DS_Store
+Thumbs.db
