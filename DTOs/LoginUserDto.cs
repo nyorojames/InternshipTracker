@@ -2,17 +2,12 @@
 
 namespace InternshipTrackerAPI.DTOs
 {
-    public class RegisterUserDto
+    public class LoginUserDto
     {
         [Required]
-        public string Username { get; set; } = string.Empty;
-
-        [Required]
-        [EmailAddress]
         public string Email { get; set; } = string.Empty;
 
         [Required]
-        [MinLength(6)]
         public string Password { get; set; } = string.Empty;
     }
 }
