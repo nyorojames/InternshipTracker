@@ -10,6 +10,8 @@ namespace InternshipTrackerAPI.DTOs
         [Required]
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
+        [Phone]
+        public string PhoneNumber { get; set; } = string.Empty;
 
         [Required]
         [MinLength(6)]

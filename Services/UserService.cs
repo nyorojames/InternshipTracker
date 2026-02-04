@@ -25,6 +25,7 @@ public class UserService : IUserService
         {
             Username = dto.Username,
             Email = dto.Email,
+            PhoneNumber = dto.PhoneNumber,
             PasswordHash = passwordHash
         };
 
