@@ -79,7 +79,7 @@ namespace InternshipTrackerAPI.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreatedAt", "Email", "PasswordHash", "Username" },
-                values: new object[] { 1, new DateTime(2025, 11, 23, 7, 48, 5, 48, DateTimeKind.Utc).AddTicks(1060), "student@uni.edu", "student@123", "student1" });
+                values: new object[] { 1, new DateTime(2025, 11, 23, 7, 48, 5, 48, DateTimeKind.Utc).AddTicks(1060), "student@uni.edu", "$2a$11$uIvxJyfCWMRnPipkDTuC8Oh26zgd8y/khAhLcu7dHtQJq8F4l3waa", "student1" });
 
             migrationBuilder.InsertData(
                 table: "Internships",

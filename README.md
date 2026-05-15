@@ -1,53 +1,82 @@
-# 🚀 Internship Application Tracker API
+# Internship Application Tracker API
 
-A robust, secure **RESTful Web API** built with **.NET 8** to help students track their internship applications, interview stages, and recruiter feedback. 
+A RESTful ASP.NET Core 8 Web API for tracking internship applications and notes.
 
-This project demonstrates **Clean Architecture**, **JWT Authentication**, and **Data Security**.
+## Architecture
 
----
+The project uses a layered structure:
 
-## 🏗️ Architecture & Design
-This API follows a layered architecture to ensure separation of concerns and maintainability:
-* **Controller Layer:** Handles HTTP requests and input validation.
-* **Service Layer:** Contains business logic and DTO mapping.
-* **Repository Layer:** Abstraction over Entity Framework Core for data access.
-* **Database:** Sqlite with One-to-Many relationships (User → Internships → Notes).
+- Controllers handle HTTP requests and responses.
+- Services contain business logic and DTO mapping.
+- Repositories isolate Entity Framework Core data access.
+- SQLite stores users, internships, and notes.
 
-### Database Schema
-* **Users:** Secure identity management with hashed passwords.
-* **Internships:** Main entity tracking company, role, and status (Enum).
-* **Notes:** Sub-resource for tracking interview feedback and specific updates per application.
+## Tech Stack
 
----
+- ASP.NET Core 8 Web API
+- Entity Framework Core 8
+- SQLite
+- JWT bearer authentication
+- BCrypt password hashing
+- Swagger / OpenAPI
 
-## 🛠️ Tech Stack
-* **Framework:** ASP.NET Core 8.0 (Web API)
-* **Language:** C#
-* **Database:** MS Sqlite / Entity Framework Core
-* **Authentication:** JWT (JSON Web Tokens)
-* **Security:** BCrypt.Net for password hashing
-* **Documentation:** Swagger / OpenAPI
+## Main Entities
 
----
+- `User`: account profile and password hash.
+- `Internship`: company, role, status, job URL, application date, and owning user.
+- `Note`: updates or feedback attached to an internship.
 
-## ⚡ Key Features
-* **🔐 Secure Authentication:** Full Registration & Login flow using JWT Bearer tokens. Passwords are never stored in plain text (BCrypt hashing).
-* **🛡️ Multi-Tenancy (Data Privacy):** Users can strictly access *only* their own data. A middleware-enforced `UserId` check ensures data isolation.
-* **📄 CRUD Operations:** Complete management of Internship Applications and related Notes.
-* **📝 Repository Pattern:** Decoupled data access logic for better testing and cleaner code.
-* **🔄 DTOs (Data Transfer Objects):** Prevents over-exposure of internal database entities to the public API.
+The relationship is:
 
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-* [.NET 8 SDK](https://dotnet.microsoft.com/download)
-* SQL Server (LocalDB is fine)
-
-### Clone the Repository
-```bash
-https://github.com/nyorojames/InternshipTrackerAPI.git
+```text
+User -> Internships -> Notes
 ```
 
-<img width="1341" height="631" alt="Screenshot 2026-01-31 100526" src="https://github.com/user-attachments/assets/bbdb0fc5-54a2-4e5a-baec-fbde5478a714" />
+## API Endpoints
+
+```http
+POST /api/auth/register
+POST /api/auth/login
+
+GET  /api/internships
+GET  /api/internships/{id}
+POST /api/internships
+
+GET  /api/notes/internship/{internshipId}
+POST /api/notes
+```
+
+Protected endpoints require:
+
+```http
+Authorization: Bearer {token}
+```
+
+## Demo User
+
+The seed data includes a demo user:
+
+```text
+Email: student@uni.edu
+Password: student@123
+```
+
+## Running Locally
+
+Prerequisites:
+
+- .NET 8 SDK
+
+From the solution root:
+
+```bash
+dotnet restore
+dotnet ef database update --project InternshipTrackerAPI
+dotnet run --project InternshipTrackerAPI
+```
+
+Swagger is available in development mode at:
+
+```text
+https://localhost:{port}/swagger
+```

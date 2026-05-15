@@ -21,7 +21,8 @@ namespace InternshipTrackerAPI.Data.Config
                      Id = SeedConstants.DemoUserId,
                      Username = "student1",
                      Email = "student@uni.edu",
-                     PasswordHash = "student@123",
+                     PhoneNumber = "+254700000000",
+                     PasswordHash = "$2a$11$uIvxJyfCWMRnPipkDTuC8Oh26zgd8y/khAhLcu7dHtQJq8F4l3waa",
                      CreatedAt = DateTime.UtcNow.AddMonths(-2)
                  }
              );

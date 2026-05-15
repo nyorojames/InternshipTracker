@@ -1,49 +1,51 @@
-﻿using InternshipTrackerAPI.DTOs;
-using InternshipTrackerAPI.Models;
-using InternshipTrackerAPI.Repositories.Contracts;
+using InternshipTrackerAPI.DTOs;
+using InternshipTrackerAPI.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("api/[controller]")]
-[ApiController]
-[Authorize]
-public class NotesController : ControllerBase
+namespace InternshipTrackerAPI.Controllers
 {
-    private readonly INoteRepository _repository;
-
-    public NotesController(INoteRepository repository)
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
+    public class NotesController : ControllerBase
     {
-        _repository = repository;
-    }
+        private readonly INoteService _service;
 
-    [HttpGet("internship/{internshipId}")]
-    public async Task<IActionResult> GetNotesForInternship(int internshipId)
-    {
-        var notes = await _repository.GetByInternshipIdAsync(internshipId);
-
-        var noteDtos = notes.Select(n => new NoteDto
+        public NotesController(INoteService service)
         {
-            Id = n.Id,
-            Title = n.Title,
-            Content = n.Content,
-            DateCreated = n.DateCreated
-        });
+            _service = service;
+        }
 
-        return Ok(noteDtos);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Create(CreateNoteDto dto)
-    {
-        var note = new Note
+        [HttpGet("internship/{internshipId}")]
+        public async Task<IActionResult> GetNotesForInternship(int internshipId)
         {
-            InternshipId = dto.InternshipId,
-            Title = dto.Title,
-            Content = dto.Content,
-            DateCreated = DateTime.UtcNow
-        };
+            var userId = GetCurrentUserId();
+            var notes = await _service.GetByInternshipIdAsync(internshipId, userId);
 
-        await _repository.CreateAsync(note);
-        return Ok(note);
+            if (notes == null) return NotFound();
+            return Ok(notes);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateNoteDto dto)
+        {
+            var userId = GetCurrentUserId();
+            var note = await _service.CreateAsync(dto, userId);
+
+            if (note == null) return NotFound();
+            return Ok(note);
+        }
+
+        private int GetCurrentUserId()
+        {
+            var idClaim = User.FindFirst("id");
+            if (idClaim != null && int.TryParse(idClaim.Value, out int userId))
+            {
+                return userId;
+            }
+
+            throw new UnauthorizedAccessException("Invalid Token");
+        }
     }
 }

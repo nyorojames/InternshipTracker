@@ -64,8 +64,8 @@ namespace InternshipTrackerAPI.Migrations
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 1,
-                columns: new[] { "CreatedAt", "PhoneNumber" },
-                values: new object[] { new DateTime(2025, 12, 4, 6, 38, 43, 602, DateTimeKind.Utc).AddTicks(4890), "" });
+                columns: new[] { "CreatedAt", "PasswordHash", "PhoneNumber" },
+                values: new object[] { new DateTime(2025, 12, 4, 6, 38, 43, 602, DateTimeKind.Utc).AddTicks(4890), "$2a$11$uIvxJyfCWMRnPipkDTuC8Oh26zgd8y/khAhLcu7dHtQJq8F4l3waa", "+254700000000" });
         }
 
         /// <inheritdoc />
@@ -121,8 +121,8 @@ namespace InternshipTrackerAPI.Migrations
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 1,
-                column: "CreatedAt",
-                value: new DateTime(2025, 11, 23, 7, 48, 5, 48, DateTimeKind.Utc).AddTicks(1060));
+                columns: new[] { "CreatedAt", "PasswordHash" },
+                values: new object[] { new DateTime(2025, 11, 23, 7, 48, 5, 48, DateTimeKind.Utc).AddTicks(1060), "$2a$11$uIvxJyfCWMRnPipkDTuC8Oh26zgd8y/khAhLcu7dHtQJq8F4l3waa" });
         }
     }
 }

@@ -186,8 +186,8 @@ namespace InternshipTrackerAPI.Migrations
                             Id = 1,
                             CreatedAt = new DateTime(2025, 12, 4, 6, 38, 43, 602, DateTimeKind.Utc).AddTicks(4890),
                             Email = "student@uni.edu",
-                            PasswordHash = "student@123",
-                            PhoneNumber = "",
+                            PasswordHash = "$2a$11$uIvxJyfCWMRnPipkDTuC8Oh26zgd8y/khAhLcu7dHtQJq8F4l3waa",
+                            PhoneNumber = "+254700000000",
                             Username = "student1"
                         });
                 });

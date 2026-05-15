@@ -1,7 +1,10 @@
 ﻿using InternshipTrackerAPI.DTOs;
 
-public interface IUserService
+namespace InternshipTrackerAPI.Services.Contracts
 {
-    Task<UserDto> RegisterAsync(RegisterUserDto dto);
-    Task<UserDto?> LoginAsync(LoginUserDto dto);
+    public interface IUserService
+    {
+        Task<UserDto> RegisterAsync(RegisterUserDto dto);
+        Task<UserDto?> LoginAsync(LoginUserDto dto);
+    }
 }

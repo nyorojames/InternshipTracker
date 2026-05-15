@@ -2,73 +2,78 @@
 using InternshipTrackerAPI.Models;
 using InternshipTrackerAPI.Repositories.Contracts;
 
-public class InternshipService : IInternshipService
+using InternshipTrackerAPI.Services.Contracts;
+
+namespace InternshipTrackerAPI.Services
 {
-    private readonly IInternshipRepository _repository;
-
-    public InternshipService(IInternshipRepository repository)
+    public class InternshipService : IInternshipService
     {
-        _repository = repository;
-    }
+        private readonly IInternshipRepository _repository;
 
-    public async Task<List<InternshipDto>> GetAllAsync(int userId)
-    {
-        var internships = await _repository.GetAllAsync(userId);
-
-        // Manual Mapping (Entity -> DTO)
-        return internships.Select(i => new InternshipDto
+        public InternshipService(IInternshipRepository repository)
         {
-            Id = i.Id,
-            CompanyName = i.CompanyName,
-            RoleTitle = i.RoleTitle,
-            Status = i.Status.ToString(), // Convert Enum to String
-            DateApplied = i.DateApplied,
-            JobUrl = i.JobUrl
-        }).ToList();
-    }
+            _repository = repository;
+        }
 
-    public async Task<InternshipDto?> GetByIdAsync(int id, int userId)
-    {
-        var internship = await _repository.GetByIdAsync(id);
-
-        // Security Check: Does this belong to the user?
-        if (internship == null || internship.UserId != userId)
-            return null;
-
-        return new InternshipDto
+        public async Task<List<InternshipDto>> GetAllAsync(int userId)
         {
-            Id = internship.Id,
-            CompanyName = internship.CompanyName,
-            RoleTitle = internship.RoleTitle,
-            Status = internship.Status.ToString(),
-            DateApplied = internship.DateApplied,
-            JobUrl = internship.JobUrl
-        };
-    }
+            var internships = await _repository.GetAllAsync(userId);
 
-    public async Task<InternshipDto> CreateAsync(CreateInternshipDto dto, int userId)
-    {
-        var internship = new Internship
+            // Manual Mapping (Entity -> DTO)
+            return internships.Select(i => new InternshipDto
+            {
+                Id = i.Id,
+                CompanyName = i.CompanyName,
+                RoleTitle = i.RoleTitle,
+                Status = i.Status.ToString(), // Convert Enum to String
+                DateApplied = i.DateApplied,
+                JobUrl = i.JobUrl
+            }).ToList();
+        }
+
+        public async Task<InternshipDto?> GetByIdAsync(int id, int userId)
         {
-            UserId = userId,
-            CompanyName = dto.CompanyName,
-            RoleTitle = dto.RoleTitle,
-            Status = dto.Status,
-            JobUrl = dto.JobUrl,
-            DateApplied = DateTime.UtcNow,
-            IsActive = true
-        };
+            var internship = await _repository.GetByIdAsync(id);
 
-        await _repository.CreateAsync(internship);
+            // Security Check: Does this belong to the user?
+            if (internship == null || internship.UserId != userId)
+                return null;
 
-        return new InternshipDto
+            return new InternshipDto
+            {
+                Id = internship.Id,
+                CompanyName = internship.CompanyName,
+                RoleTitle = internship.RoleTitle,
+                Status = internship.Status.ToString(),
+                DateApplied = internship.DateApplied,
+                JobUrl = internship.JobUrl
+            };
+        }
+
+        public async Task<InternshipDto> CreateAsync(CreateInternshipDto dto, int userId)
         {
-            Id = internship.Id,
-            CompanyName = internship.CompanyName,
-            RoleTitle = internship.RoleTitle,
-            Status = internship.Status.ToString(),
-            DateApplied = internship.DateApplied,
-            JobUrl = internship.JobUrl
-        };
+            var internship = new Internship
+            {
+                UserId = userId,
+                CompanyName = dto.CompanyName,
+                RoleTitle = dto.RoleTitle,
+                Status = dto.Status,
+                JobUrl = dto.JobUrl,
+                DateApplied = DateTime.UtcNow,
+                IsActive = true
+            };
+
+            await _repository.CreateAsync(internship);
+
+            return new InternshipDto
+            {
+                Id = internship.Id,
+                CompanyName = internship.CompanyName,
+                RoleTitle = internship.RoleTitle,
+                Status = internship.Status.ToString(),
+                DateApplied = internship.DateApplied,
+                JobUrl = internship.JobUrl
+            };
+        }
     }
 }
