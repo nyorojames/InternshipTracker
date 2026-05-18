@@ -1,15 +1,43 @@
-# --- Build & Runtime ---
-[Bb]in/
-[Oo]bj/
+# --- IDE & System ---
 .vs/
 .vscode/
-
-# --- User Specific ---
+.DS_Store
+Thumbs.db
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
 
-# --- OS Generated ---
-.DS_Store
-Thumbs.db
+# --- .NET ---
+**/[Bb]in/
+**/[Oo]bj/
+*.swp
+*.lock
+.pfx
+.certificate
+appsettings.json
+!InternshipTrackerAPI/appsettings.json
+!InternshipTrackerAPI/appsettings.Development.json
+
+# --- SQLite ---
+*.db
+*.db-shm
+*.db-wal
+InternshipTrackerAPI/InternshipTrackerDB*
+
+# --- Node.js ---
+**/node_modules/
+**/dist/
+**/dist-ssr/
+*.local
+.eslintcache
+.stylelintcache
+.tsbuildinfo
+
+# --- Logs ---
+*.log
+api-dev*.log
+frontend-dev*.log
+
+# --- Project Specific ---
+InternshipTrackerAPI/DataProtectionKeys/

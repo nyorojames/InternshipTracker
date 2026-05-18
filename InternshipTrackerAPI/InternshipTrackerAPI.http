@@ -1,0 +1,47 @@
+@InternshipTrackerAPI_HostAddress = http://localhost:5067
+@token = paste-jwt-token-here
+
+POST {{InternshipTrackerAPI_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "student@uni.edu",
+  "password": "student@123"
+}
+
+###
+
+GET {{InternshipTrackerAPI_HostAddress}}/api/internships
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###
+
+POST {{InternshipTrackerAPI_HostAddress}}/api/internships
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "companyName": "Example Company",
+  "roleTitle": "Software Engineering Intern",
+  "status": "Applied",
+  "jobUrl": "https://example.com/jobs/intern"
+}
+
+###
+
+GET {{InternshipTrackerAPI_HostAddress}}/api/notes/internship/1
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###
+
+POST {{InternshipTrackerAPI_HostAddress}}/api/notes
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "internshipId": 1,
+  "title": "Follow up",
+  "content": "Sent recruiter a follow-up email."
+}

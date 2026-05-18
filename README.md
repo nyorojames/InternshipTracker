@@ -1,82 +1,50 @@
-# Internship Application Tracker API
+# InternshipTracker
 
-A RESTful ASP.NET Core 8 Web API for tracking internship applications and notes.
+A comprehensive solution for tracking and managing internship applications, consisting of a .NET Web API backend and a React frontend.
 
-## Architecture
+## Project Structure
 
-The project uses a layered structure:
+- **InternshipTrackerAPI/**: .NET 8.0 Web API using Entity Framework Core and SQLite.
+- **InternshipTrackerClient/**: React frontend built with TypeScript, Vite, and Tailwind CSS.
 
-- Controllers handle HTTP requests and responses.
-- Services contain business logic and DTO mapping.
-- Repositories isolate Entity Framework Core data access.
-- SQLite stores users, internships, and notes.
+## Getting Started
 
-## Tech Stack
+### Prerequisites
 
-- ASP.NET Core 8 Web API
-- Entity Framework Core 8
-- SQLite
-- JWT bearer authentication
-- BCrypt password hashing
-- Swagger / OpenAPI
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [npm](https://www.npmjs.com/)
 
-## Main Entities
+### Quick Start
 
-- `User`: account profile and password hash.
-- `Internship`: company, role, status, job URL, application date, and owning user.
-- `Note`: updates or feedback attached to an internship.
+1. **Backend Setup:**
+   ```bash
+   cd InternshipTrackerAPI
+   dotnet ef database update
+   dotnet run
+   ```
+   The API will be available at `http://localhost:5067`.
 
-The relationship is:
+2. **Frontend Setup:**
+   ```bash
+   cd InternshipTrackerClient
+   npm install
+   npm run dev
+   ```
+   The frontend will be available at `http://localhost:5173`.
 
-```text
-User -> Internships -> Notes
-```
+## Documentation
 
-## API Endpoints
+- [Backend README](InternshipTrackerAPI/README.md)
+- [Frontend README](InternshipTrackerClient/README.md)
 
-```http
-POST /api/auth/register
-POST /api/auth/login
+## Features
 
-GET  /api/internships
-GET  /api/internships/{id}
-POST /api/internships
+- **Application Tracking**: Manage company names, roles, statuses, and deadlines.
+- **Note Management**: Attach detailed notes and feedback to each application.
+- **Dashboard**: High-level overview of application progress.
+- **Authentication**: Secure JWT-based user authentication.
 
-GET  /api/notes/internship/{internshipId}
-POST /api/notes
-```
+## License
 
-Protected endpoints require:
-
-```http
-Authorization: Bearer {token}
-```
-
-## Demo User
-
-The seed data includes a demo user:
-
-```text
-Email: student@uni.edu
-Password: student@123
-```
-
-## Running Locally
-
-Prerequisites:
-
-- .NET 8 SDK
-
-From the solution root:
-
-```bash
-dotnet restore
-dotnet ef database update --project InternshipTrackerAPI
-dotnet run --project InternshipTrackerAPI
-```
-
-Swagger is available in development mode at:
-
-```text
-https://localhost:{port}/swagger
-```
+This project is private and intended for personal use.
