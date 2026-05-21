@@ -1,7 +1,16 @@
 import type { Internship, InternshipPayload, Note, User } from "./types";
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ?? "http://localhost:5067/api";
+function normalizeApiBaseUrl(url: string) {
+  const trimmedUrl = url.replace(/\/+$/, "");
+
+  return trimmedUrl.endsWith("/api") ? trimmedUrl : `${trimmedUrl}/api`;
+}
+
+const API_BASE_URL = normalizeApiBaseUrl(
+  import.meta.env.VITE_API_BASE_URL ??
+    import.meta.env.VITE_API_URL ??
+    "http://localhost:5067/api",
+);
 
 type ApiOptions = RequestInit & {
   token?: string;

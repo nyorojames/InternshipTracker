@@ -25,8 +25,13 @@ builder.Logging.AddDebug();
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+var dataProtectionKeysPath = builder.Configuration["DataProtection:KeysPath"]
+    ?? Path.Combine(builder.Environment.ContentRootPath, "DataProtectionKeys");
+Directory.CreateDirectory(dataProtectionKeysPath);
+
 builder.Services.AddDataProtection()
-    .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(builder.Environment.ContentRootPath, "DataProtectionKeys")));
+    .PersistKeysToFileSystem(new DirectoryInfo(dataProtectionKeysPath));
 
 var allowedOrigins = builder.Configuration
     .GetSection("Cors:AllowedOrigins")
@@ -43,9 +48,30 @@ builder.Services.AddCors(options =>
     });
 });
 
+var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrWhiteSpace(defaultConnectionString))
+{
+    throw new InvalidOperationException("ConnectionStrings:DefaultConnection is not configured.");
+}
+
+var dataSource = defaultConnectionString
+    .Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+    .FirstOrDefault(part => part.StartsWith("Data Source=", StringComparison.OrdinalIgnoreCase))
+    ?.Split('=', 2)[1]
+    .Trim();
+
+if (!string.IsNullOrWhiteSpace(dataSource))
+{
+    var databaseDirectory = Path.GetDirectoryName(dataSource);
+    if (!string.IsNullOrWhiteSpace(databaseDirectory))
+    {
+        Directory.CreateDirectory(databaseDirectory);
+    }
+}
+
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlite(defaultConnectionString);
 });
 
 builder.Services.AddScoped<IInternshipRepository, InternshipRepository>();
@@ -125,6 +151,7 @@ app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 app.MapControllers();
 
 app.Run();
