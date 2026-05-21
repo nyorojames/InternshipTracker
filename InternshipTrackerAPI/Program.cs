@@ -22,15 +22,16 @@ builder.Services.AddControllers();
 builder.Services.AddDataProtection()
     .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(builder.Environment.ContentRootPath, "DataProtectionKeys")));
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("Frontend", policy =>
-    {
-        policy.WithOrigins("http://localhost:5173", "https://localhost:5173")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
+builder.Services.AddCors(options => {
+       options.AddPolicy("AllowFrontend", policy => {
+           policy.WithOrigins(
+               "http://localhost:5173",
+               "https://your-app.vercel.app" 
+           )
+           .AllowAnyHeader()
+           .AllowAnyMethod();
+       });
+   });
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
