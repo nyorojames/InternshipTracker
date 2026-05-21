@@ -38,6 +38,52 @@ A comprehensive solution for tracking and managing internship applications, cons
 - [Backend README](InternshipTrackerAPI/README.md)
 - [Frontend README](InternshipTrackerClient/README.md)
 
+## Deployment
+
+Deploy this repository as two separate services.
+
+### Backend: Railway
+
+Create a Railway service from this repository and set the root directory to:
+
+```text
+InternshipTrackerAPI
+```
+
+Required Railway variables:
+
+```text
+ASPNETCORE_ENVIRONMENT=Production
+Jwt__Key=<long-random-secret-at-least-32-characters>
+ConnectionStrings__DefaultConnection=Data Source=/data/InternshipTrackerDB.sqlite
+Cors__AllowedOrigins__0=https://your-vercel-app.vercel.app
+```
+
+If you keep SQLite for the demo database, attach a Railway volume mounted at `/data`.
+The API applies EF Core migrations automatically at startup.
+
+### Frontend: Vercel
+
+Create a Vercel project from this repository and set the root directory to:
+
+```text
+InternshipTrackerClient
+```
+
+Use the default Vite settings:
+
+```text
+Build command: npm run build
+Output directory: dist
+Install command: npm install
+```
+
+Required Vercel variable:
+
+```text
+VITE_API_BASE_URL=https://your-railway-api.up.railway.app/api
+```
+
 ## Features
 
 - **Application Tracking**: Manage company names, roles, statuses, and deadlines.
